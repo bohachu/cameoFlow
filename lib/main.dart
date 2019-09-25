@@ -58,7 +58,7 @@ class FileReadWrite{
     ioSink.write('FILE ACCESSED ${new DateTime.now()}\n');
     ioSink.close();
     */
-    String strFileContent='很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
+    String strFileContent='測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
     writeFile(strFileContent);
   }
 }
