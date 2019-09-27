@@ -58,7 +58,7 @@ class FileReadWrite{
     ioSink.write('FILE ACCESSED ${new DateTime.now()}\n');
     ioSink.close();
     */
-    String strFileContent='測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
+    String strFileContent='v0.2 測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
     writeFile(strFileContent);
   }
 }
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     TestAll.test();
     return MaterialApp(
-      title: 'Cameo AiFlow',
+      title: 'Cameo Flow',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blueGrey,
       ),
-      home: MyHomePage(title: 'Cameo AiFlow v0.1'),
+      home: MyHomePage(title: 'Cameo Flow v0.2'),
     );
   }
 }
