@@ -5,36 +5,36 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class TestAll{
-  static test(){
-    FileReadWrite fileReadWrite=FileReadWrite();
-    fileReadWrite.test();
+  static test() async{
+    /*
     HttpFetch httpFetch=HttpFetch();
     httpFetch.test();
+    FileReadWrite fileReadWrite=FileReadWrite();
+    fileReadWrite.test();
+    */
+    String strTrello=await HttpFetch.fetchTrello();
+    var fileReadWrite=FileReadWrite();
+    fileReadWrite.write(strTrello);
+    /* Check file output result
+    cd ~/Library/Developer/CoreSimulator/Devices
+    find . -name "flutterWriteFileTest.txt" -exec cat {} +
+    */
   }
 }
-
 class HttpFetch {
   test(){
     fetchTrello();
   }
-  static Future<http.Response> fetchPost() async{
-    print('main.dart/Future<http.Response> fetchPost() async');
-    var response=await http.get('https://jsonplaceholder.typicode.com/posts/1');
-    print('main.dart/HttpFetch/fetchPost/response'+response.body.toString());
-    return response;
-  }
-  static void fetchTrello() async{
+  static Future<String> fetchTrello() async{
     var strUrl = "https://api.trello.com/1/boards/5d62808da5dc7510aefef8b2?actions=all&boardStars=none&cards=none&card_pluginData=false&checklists=none&customFields=false&fields=name%2Cdesc%2CdescData%2Cclosed%2CidOrganization%2Cpinned%2Curl%2CshortUrl%2Cprefs%2ClabelNames&lists=open&members=none&memberships=none&membersInvited=none&membersInvited_fields=all&pluginData=false&organization=false&organization_pluginData=false&myPrefs=false&tags=false&key=876733968653dd64a9e7f983f92be18a&token=ce642d0028b550014df0a911ce9750e6078abf7d3cb1caec459a2df215ff097c";
     var response=await http.get(strUrl);
     print('main.dart/fetchTrello:\n'+response.body);
+    return response.body;
   }
 }
-
 class FileReadWrite{
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -42,27 +42,17 @@ class FileReadWrite{
   }
   Future<File> get _localFile async {
     final path = await _localPath;
-    // iOS Simulator File Location: ~/Library/Developer/CoreSimulator/Devices
-    // ./B49E38F8-33DD-49BF-BCDC-E8B0866E2DAE/data/Containers/Data/Application/D2FAFAA1-E47C-48B1-9234-F1AB35F3D333/Documents/flutterWriteFileTest.txt
-    // find . -name "flutterWriteFileTest.txt" -exec cat {} +
     return File('$path/flutterWriteFileTest.txt');
   }
-  Future<File> writeFile(String strFileContent) async {
+  Future<File> write(String strFileContent) async {
     final file = await _localFile;
     return file.writeAsString('$strFileContent');
   }
   test(){
-    /*
-    var file = new File('20190925 Dart File.txt');
-    var ioSink = file.openWrite();
-    ioSink.write('FILE ACCESSED ${new DateTime.now()}\n');
-    ioSink.close();
-    */
     String strFileContent='v0.2 測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
-    writeFile(strFileContent);
+    write(strFileContent);
   }
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -82,7 +72,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blueGrey,
       ),
-      home: MyHomePage(title: 'Cameo Flow v0.2'),
+      home: MyHomePage(title: 'Cameo Flow'),
     );
   }
 }
