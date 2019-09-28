@@ -4,55 +4,64 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'jsonTrello.dart';
 
 void main() => runApp(MyApp());
 
-class TestAll{
-  static test() async{
+class TestAll {
+  static test() async {
     /*
     HttpFetch httpFetch=HttpFetch();
     httpFetch.test();
     FileReadWrite fileReadWrite=FileReadWrite();
     fileReadWrite.test();
     */
-    String strTrello=await HttpFetch.fetchTrello();
-    var fileReadWrite=FileReadWrite();
+    String strTrello = await HttpFetch.fetchTrello();
+    var fileReadWrite = FileReadWrite();
     fileReadWrite.write(strTrello);
     /* Check file output result
     cd ~/Library/Developer/CoreSimulator/Devices
     find . -name "flutterWriteFileTest.txt" -exec cat {} +
     */
+    checkJson();
   }
 }
+
 class HttpFetch {
-  test(){
+  test() {
     fetchTrello();
   }
-  static Future<String> fetchTrello() async{
-    var strUrl = "https://api.trello.com/1/boards/5d62808da5dc7510aefef8b2?actions=all&boardStars=none&cards=none&card_pluginData=false&checklists=none&customFields=false&fields=name%2Cdesc%2CdescData%2Cclosed%2CidOrganization%2Cpinned%2Curl%2CshortUrl%2Cprefs%2ClabelNames&lists=open&members=none&memberships=none&membersInvited=none&membersInvited_fields=all&pluginData=false&organization=false&organization_pluginData=false&myPrefs=false&tags=false&key=876733968653dd64a9e7f983f92be18a&token=ce642d0028b550014df0a911ce9750e6078abf7d3cb1caec459a2df215ff097c";
-    var response=await http.get(strUrl);
-    print('main.dart/fetchTrello:\n'+response.body);
+
+  static Future<String> fetchTrello() async {
+    var strUrl =
+        "https://api.trello.com/1/boards/5d62808da5dc7510aefef8b2?actions=all&boardStars=none&cards=none&card_pluginData=false&checklists=none&customFields=false&fields=name%2Cdesc%2CdescData%2Cclosed%2CidOrganization%2Cpinned%2Curl%2CshortUrl%2Cprefs%2ClabelNames&lists=open&members=none&memberships=none&membersInvited=none&membersInvited_fields=all&pluginData=false&organization=false&organization_pluginData=false&myPrefs=false&tags=false&key=876733968653dd64a9e7f983f92be18a&token=ce642d0028b550014df0a911ce9750e6078abf7d3cb1caec459a2df215ff097c";
+    var response = await http.get(strUrl);
     return response.body;
   }
 }
-class FileReadWrite{
+
+class FileReadWrite {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
+
   Future<File> get _localFile async {
     final path = await _localPath;
     return File('$path/flutterWriteFileTest.txt');
   }
+
   Future<File> write(String strFileContent) async {
     final file = await _localFile;
     return file.writeAsString('$strFileContent');
   }
-  test(){
-    String strFileContent='v0.2 測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
+
+  test() {
+    String strFileContent = 'v0.2 測試一下 git 很棒棒喔 馬上可以看到 中文系統功勞多 babalala hahaha';
     write(strFileContent);
   }
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -76,6 +85,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -93,6 +103,7 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   void _incrementCounter() {
